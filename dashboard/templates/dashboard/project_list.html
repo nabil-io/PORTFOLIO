@@ -1,0 +1,39 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block content %}
+<div class="space-y-8">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-black text-white">Gestion des Projets</h1>
+            <p class="text-slate-400 text-sm mt-1">Ajoutez, modifiez ou supprimez vos projets en temps réel.</p>
+        </div>
+        <a href="{% url 'dashboard:project_add' %}" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-purple-600 text-slate-950 font-bold flex items-center gap-2 hover:shadow-[0_0_20px_#00f0ff] transition">
+            <i class="fas fa-plus"></i> Ajouter un projet
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for project in projects %}
+        <div class="glow-box p-6 rounded-2xl bg-slate-900/60 backdrop-blur flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs font-mono px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">{{ project.get_status_display }}</span>
+                    <span class="text-xs font-mono text-slate-500">Ordre: {{ project.order }}</span>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">{{ project.title }}</h3>
+                <p class="text-slate-300 text-sm mb-4 line-clamp-2">{{ project.short_description }}</p>
+                <p class="text-xs font-mono text-cyan-400 mb-4">{{ project.technologies }}</p>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                <a href="{% url 'dashboard:project_edit' project.pk %}" class="text-cyan-400 hover:underline text-sm font-medium"><i class="fas fa-edit"></i> Modifier</a>
+                <a href="{% url 'dashboard:project_delete' project.pk %}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')" class="text-red-400 hover:underline text-sm font-medium"><i class="fas fa-trash"></i> Supprimer</a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-full text-center py-12">
+            <p class="text-slate-400">Aucun projet enregistré.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

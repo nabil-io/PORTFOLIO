@@ -1,0 +1,67 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block content %}
+<div class="space-y-8">
+    <div>
+        <h1 class="text-3xl font-black text-white">Tableau de Bord</h1>
+        <p class="text-slate-400 text-sm mt-1">Bienvenue dans l'espace d'administration de votre portfolio.</p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="glow-box p-6 rounded-2xl bg-slate-900/60 backdrop-blur">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-mono text-cyan-400">PROJETS</span>
+                <i class="fas fa-rocket text-cyan-400 text-xl"></i>
+            </div>
+            <p class="text-3xl font-extrabold text-white">{{ projects_count }}</p>
+            <a href="{% url 'dashboard:project_list' %}" class="text-xs text-slate-400 hover:text-cyan-400 mt-2 inline-block">Gérer les projets &rarr;</a>
+        </div>
+
+        <div class="glow-box p-6 rounded-2xl bg-slate-900/60 backdrop-blur">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-mono text-purple-400">COMPÉTENCES</span>
+                <i class="fas fa-code text-purple-400 text-xl"></i>
+            </div>
+            <p class="text-3xl font-extrabold text-white">{{ skills_count }}</p>
+            <a href="{% url 'dashboard:skill_list' %}" class="text-xs text-slate-400 hover:text-purple-400 mt-2 inline-block">Gérer les compétences &rarr;</a>
+        </div>
+
+        <div class="glow-box p-6 rounded-2xl bg-slate-900/60 backdrop-blur">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-mono text-cyan-400">MESSAGES</span>
+                <i class="fas fa-envelope text-cyan-400 text-xl"></i>
+            </div>
+            <p class="text-3xl font-extrabold text-white">{{ messages_count }}</p>
+            <a href="{% url 'dashboard:message_list' %}" class="text-xs text-slate-400 hover:text-cyan-400 mt-2 inline-block">Voir les messages &rarr;</a>
+        </div>
+
+        <div class="glow-box p-6 rounded-2xl bg-slate-900/60 backdrop-blur">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-mono text-purple-400">NON LUS</span>
+                <i class="fas fa-bell text-purple-400 text-xl"></i>
+            </div>
+            <p class="text-3xl font-extrabold text-white">{{ unread_messages }}</p>
+            <a href="{% url 'dashboard:message_list' %}" class="text-xs text-slate-400 hover:text-purple-400 mt-2 inline-block">Vérifier la boîte &rarr;</a>
+        </div>
+    </div>
+
+    <!-- Recent Messages -->
+    <div class="glow-box p-8 rounded-2xl bg-slate-900/60 backdrop-blur">
+        <h3 class="text-xl font-bold text-white mb-6">Derniers messages reçus</h3>
+        <div class="space-y-4">
+            {% for msg in recent_messages %}
+            <div class="p-4 rounded-xl bg-slate-950 border border-white/5 flex items-center justify-between">
+                <div>
+                    <h4 class="font-bold text-white text-sm">{{ msg.name }} <span class="text-xs font-mono text-cyan-400">({{ msg.email }})</span></h4>
+                    <p class="text-slate-300 text-xs mt-1">{{ msg.subject }} — <span class="text-slate-500">{{ msg.message|truncatechars:50 }}</span></p>
+                </div>
+                <span class="text-xs font-mono text-slate-500">{{ msg.created_at|date:"d M Y" }}</span>
+            </div>
+            {% empty %}
+            <p class="text-slate-400 text-sm">Aucun message pour l'instant.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

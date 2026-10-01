@@ -1,0 +1,56 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block content %}
+<div class="max-w-xl mx-auto space-y-8">
+    <div>
+        <h1 class="text-3xl font-black text-white">{{ action }} un Parcours Académique</h1>
+        <p class="text-slate-400 text-sm mt-1">Détails de la formation ou du diplôme.</p>
+    </div>
+
+    <form method="POST" class="glow-box p-8 rounded-2xl bg-slate-900/80 backdrop-blur space-y-6">
+        {% csrf_token %}
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Diplôme / Formation</label>
+            <input type="text" name="degree" value="{{ education.degree }}" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Établissement / Institution</label>
+            <input type="text" name="institution" value="{{ education.institution }}" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Localisation</label>
+            <input type="text" name="location" value="{{ education.location|default:'Parakou, Bénin' }}" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-xs font-mono text-slate-400 mb-2">Année de début</label>
+                <input type="text" name="start_year" value="{{ education.start_year }}" required placeholder="ex: 2025" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-xs font-mono text-slate-400 mb-2">Année de fin</label>
+                <input type="text" name="end_year" value="{{ education.end_year|default:'En cours' }}" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">
+            </div>
+        </div>
+
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Description / Compétences acquises</label>
+            <textarea name="description" rows="4" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">{{ education.description }}</textarea>
+        </div>
+
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Ordre d'affichage</label>
+            <input type="number" name="order" value="{{ education.order|default:0 }}" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+
+        <div class="flex items-center justify-between pt-4">
+            <a href="{% url 'dashboard:education_list' %}" class="text-slate-400 hover:text-white text-sm">Annuler</a>
+            <button type="submit" class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-purple-600 text-slate-950 font-bold hover:shadow-[0_0_20px_#00f0ff] transition">
+                Enregistrer
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

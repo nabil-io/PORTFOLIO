@@ -1,0 +1,83 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto space-y-8">
+    <div>
+        <h1 class="text-3xl font-black text-white">{{ action }} un Projet</h1>
+        <p class="text-slate-400 text-sm mt-1">Renseignez les informations détaillées du projet.</p>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="glow-box p-8 rounded-2xl bg-slate-900/80 backdrop-blur space-y-6">
+        {% csrf_token %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-xs font-mono text-slate-400 mb-2">Titre du Projet</label>
+                <input type="text" name="title" value="{{ project.title }}" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-xs font-mono text-slate-400 mb-2">Slug (URL amicale)</label>
+                <input type="text" name="slug" value="{{ project.slug }}" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">
+            </div>
+        </div>
+
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Description courte</label>
+            <textarea name="short_description" rows="2" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">{{ project.short_description }}</textarea>
+        </div>
+
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Description complète</label>
+            <textarea name="full_description" rows="4" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">{{ project.full_description }}</textarea>
+        </div>
+
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Technologies (séparées par des virgules)</label>
+            <input type="text" name="technologies" value="{{ project.technologies }}" required placeholder="Django, Tailwind CSS, PostgreSQL" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-xs font-mono text-slate-400 mb-2">Lien GitHub</label>
+                <input type="url" name="github_url" value="{{ project.github_url }}" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-xs font-mono text-slate-400 mb-2">Lien Démo Live</label>
+                <input type="url" name="demo_url" value="{{ project.demo_url }}" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+                <label class="block text-xs font-mono text-slate-400 mb-2">Statut</label>
+                <select name="status" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">
+                    <option value="completed" {% if project.status == 'completed' %}selected{% endif %}>Terminé</option>
+                    <option value="in_progress" {% if project.status == 'in_progress' %}selected{% endif %}>En cours</option>
+                    <option value="archived" {% if project.status == 'archived' %}selected{% endif %}>Archivé</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs font-mono text-slate-400 mb-2">Ordre d'affichage</label>
+                <input type="number" name="order" value="{{ project.order|default:0 }}" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">
+            </div>
+            <div class="flex items-center pt-6">
+                <label class="flex items-center gap-3 cursor-pointer">
+                    <input type="checkbox" name="featured" {% if project.featured %}checked{% endif %} class="w-5 h-5 rounded bg-slate-950 border-white/10 text-cyan-400">
+                    <span class="text-sm font-medium text-white">Mettre en avant</span>
+                </label>
+            </div>
+        </div>
+
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Image / Capture d'écran</label>
+            <input type="file" name="image" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-cyan-500/10 file:text-cyan-400 hover:file:bg-cyan-500/20">
+        </div>
+
+        <div class="flex items-center justify-between pt-4">
+            <a href="{% url 'dashboard:project_list' %}" class="text-slate-400 hover:text-white text-sm">Annuler</a>
+            <button type="submit" class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-purple-600 text-slate-950 font-bold hover:shadow-[0_0_20px_#00f0ff] transition">
+                Enregistrer le projet
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

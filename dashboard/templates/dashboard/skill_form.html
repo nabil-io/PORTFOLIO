@@ -1,0 +1,49 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block content %}
+<div class="max-w-xl mx-auto space-y-8">
+    <div>
+        <h1 class="text-3xl font-black text-white">{{ action }} une Compétence</h1>
+        <p class="text-slate-400 text-sm mt-1">Configurez la compétence et son niveau.</p>
+    </div>
+
+    <form method="POST" class="glow-box p-8 rounded-2xl bg-slate-900/80 backdrop-blur space-y-6">
+        {% csrf_token %}
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Catégorie</label>
+            <select name="category" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">
+                {% for cat in categories %}
+                <option value="{{ cat.pk }}" {% if skill.category.pk == cat.pk %}selected{% endif %}>{{ cat.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Nom de la Compétence</label>
+            <input type="text" name="name" value="{{ skill.name }}" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Niveau de Maîtrise (%)</label>
+            <input type="number" name="proficiency" min="0" max="100" value="{{ skill.proficiency|default:85 }}" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Icône FontAwesome (ex: fab fa-python, fas fa-database)</label>
+            <input type="text" name="icon" value="{{ skill.icon|default:'fas fa-code' }}" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none font-mono text-sm">
+        </div>
+
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Ordre d'affichage</label>
+            <input type="number" name="order" value="{{ skill.order|default:0 }}" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+
+        <div class="flex items-center justify-between pt-4">
+            <a href="{% url 'dashboard:skill_list' %}" class="text-slate-400 hover:text-white text-sm">Annuler</a>
+            <button type="submit" class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-purple-600 text-slate-950 font-bold hover:shadow-[0_0_20px_#00f0ff] transition">
+                Enregistrer
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

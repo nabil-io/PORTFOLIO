@@ -1,0 +1,40 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block content %}
+<div class="max-w-xl mx-auto space-y-8">
+    <div>
+        <h1 class="text-3xl font-black text-white">{{ action }} un Réseau Social / Lien</h1>
+        <p class="text-slate-400 text-sm mt-1">Configurez la plateforme, l'URL (ex: lien WhatsApp, GitHub, LinkedIn) et l'icône.</p>
+    </div>
+
+    <form method="POST" class="glow-box p-8 rounded-2xl bg-slate-900/80 backdrop-blur space-y-6">
+        {% csrf_token %}
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Nom de la Plateforme (ex: WhatsApp, GitHub, LinkedIn)</label>
+            <input type="text" name="platform" value="{{ social.platform }}" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">URL / Lien (ex: https://wa.me/229..., https://github.com/...)</label>
+            <input type="text" name="url" value="{{ social.url }}" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none font-mono text-sm">
+        </div>
+
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Classe Icône FontAwesome (ex: fab fa-whatsapp, fab fa-github, fab fa-linkedin, fas fa-envelope)</label>
+            <input type="text" name="icon_class" value="{{ social.icon_class|default:'fab fa-github' }}" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none font-mono text-sm">
+        </div>
+
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Ordre d'affichage</label>
+            <input type="number" name="order" value="{{ social.order|default:0 }}" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+
+        <div class="flex items-center justify-between pt-4">
+            <a href="{% url 'dashboard:social_list' %}" class="text-slate-400 hover:text-white text-sm">Annuler</a>
+            <button type="submit" class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-purple-600 text-slate-950 font-bold hover:shadow-[0_0_20px_#00f0ff] transition">
+                Enregistrer
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

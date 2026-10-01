@@ -1,0 +1,50 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block content %}
+<div class="max-w-xl mx-auto space-y-8">
+    <div>
+        <h1 class="text-3xl font-black text-white">{{ action }} un exemple pour "{{ service.title }}"</h1>
+        <p class="text-slate-400 text-sm mt-1">Ajoutez une image, une description et un lien vers une réalisation concrète.</p>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="glow-box p-8 rounded-2xl bg-slate-900/80 backdrop-blur space-y-6">
+        {% csrf_token %}
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Titre de l'exemple / projet</label>
+            <input type="text" name="title" value="{{ example.title }}" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Description</label>
+            <textarea name="description" rows="3" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">{{ example.description }}</textarea>
+        </div>
+
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Lien du projet (démo, github, etc.)</label>
+            <input type="url" name="project_link" value="{{ example.project_link }}" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none font-mono text-sm">
+        </div>
+
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Ordre d'affichage</label>
+            <input type="number" name="order" value="{{ example.order|default:0 }}" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-cyan-400 focus:outline-none">
+        </div>
+
+        <div>
+            <label class="block text-xs font-mono text-slate-400 mb-2">Image de illustration</label>
+            <input type="file" name="image" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-cyan-500/10 file:text-cyan-400 hover:file:bg-cyan-500/20">
+            {% if example.image %}
+            <div class="mt-2">
+                <img src="{{ example.image.url }}" alt="{{ example.title }}" class="w-32 h-20 object-cover rounded-xl border border-white/10">
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="flex items-center justify-between pt-4">
+            <a href="{% url 'dashboard:service_edit' service.pk %}" class="text-slate-400 hover:text-white text-sm">Retour au service</a>
+            <button type="submit" class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-purple-600 text-slate-950 font-bold hover:shadow-[0_0_20px_#00f0ff] transition">
+                Enregistrer l'exemple
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

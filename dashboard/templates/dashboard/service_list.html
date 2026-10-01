@@ -1,0 +1,40 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block content %}
+<div class="space-y-8">
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-black text-white">Gestion des Services</h1>
+            <p class="text-slate-400 text-sm mt-1">Ajoutez, modifiez ou supprimez les services proposés.</p>
+        </div>
+        <a href="{% url 'dashboard:service_add' %}" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-purple-600 text-slate-950 font-bold flex items-center gap-2 hover:shadow-[0_0_20px_#00f0ff] transition">
+            <i class="fas fa-plus"></i> Ajouter un service
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for service in services %}
+        <div class="glow-box p-6 rounded-2xl bg-slate-900/60 backdrop-blur flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl">
+                        <i class="{{ service.icon }}"></i>
+                    </div>
+                    <span class="text-xs font-mono text-slate-500">Ordre: {{ service.order }}</span>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">{{ service.title }}</h3>
+                <p class="text-slate-300 text-sm mb-4">{{ service.description }}</p>
+            </div>
+            <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                <a href="{% url 'dashboard:service_edit' service.pk %}" class="text-cyan-400 hover:underline text-sm font-medium"><i class="fas fa-edit"></i> Modifier</a>
+                <a href="{% url 'dashboard:service_delete' service.pk %}" onclick="return confirm('Supprimer ce service ?')" class="text-red-400 hover:underline text-sm font-medium"><i class="fas fa-trash"></i> Supprimer</a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-full text-center py-12">
+            <p class="text-slate-400">Aucun service enregistré.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
